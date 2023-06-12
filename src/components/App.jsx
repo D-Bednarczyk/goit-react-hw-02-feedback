@@ -1,16 +1,15 @@
 import React, { Component } from 'react';
 import css from './App.module.css';
 import { FeedbackOptions } from './FeedbackOptions';
-
+import { Statistics } from './Statistics';
+import { Section } from './Section';
+import { Notification } from './Notification';
 export class App extends Component {
-  static defaultProps = {};
   state = {
     good: 0,
     neutral: 0,
     bad: 0,
   };
-
-  static propTypes = {};
 
   handleOnClick = option => {
     switch (option) {
@@ -36,32 +35,27 @@ export class App extends Component {
   render() {
     return (
       <div className={css.main_div}>
-        <h2>Please leave feedback</h2>
+        <Section title="Please leave feedback"></Section>
         <div>
-          <FeedbackOptions
-            options={'Good'}
-            onLeaveFeedback={() => this.handleOnClick('good')}
-          ></FeedbackOptions>
-          <FeedbackOptions
-            options={'Neutral'}
-            onLeaveFeedback={() => this.handleOnClick('neutral')}
-          ></FeedbackOptions>
-          <FeedbackOptions
-            options={'Bad'}
-            onLeaveFeedback={() => this.handleOnClick('bad')}
-          ></FeedbackOptions>
+          {['good', 'neutral', 'bad'].map(opt => (
+            <FeedbackOptions
+              options={opt}
+              onLeaveFeedback={() => this.handleOnClick(opt)}
+            ></FeedbackOptions>
+          ))}
         </div>
-        <h2>Statistics</h2>
-        <div>
-          <p>Good: {this.state.good}</p>
-          <p>Neutral: {this.state.neutral}</p>
-          <p>Bad: {this.state.bad}</p>
-          <p>Total: {this.countTotalFeedback()}</p>
-          <p>
-            Positive feedback:
-            {this.countPositiveFeedbackPercentage()}%
-          </p>
-        </div>
+        <Section title="Statistics"></Section>
+        {!this.countTotalFeedback() ? (
+          <Notification message="There is no feedback"></Notification>
+        ) : (
+          <Statistics
+            good={this.state.good}
+            neutral={this.state.neutral}
+            bad={this.state.bad}
+            total={this.countTotalFeedback()}
+            positivePercentage={this.countPositiveFeedbackPercentage()}
+          ></Statistics>
+        )}
       </div>
     );
   }
