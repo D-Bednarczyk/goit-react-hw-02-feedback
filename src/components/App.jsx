@@ -38,8 +38,9 @@ export class App extends Component {
       <div className={css.main_div}>
         <Section title="Please leave feedback"></Section>
         <div>
-          {['good', 'neutral', 'bad'].map(opt => (
+          {['good', 'neutral', 'bad'].map((opt, index) => (
             <FeedbackOptions
+              key={index}
               options={opt}
               onLeaveFeedback={() => this.handleOnClick(opt)}
             ></FeedbackOptions>
