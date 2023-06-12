@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import css from './App.module.css';
+import { FeedbackOptions } from './FeedbackOptions';
 
 export class App extends Component {
   static defaultProps = {};
@@ -11,14 +12,17 @@ export class App extends Component {
 
   static propTypes = {};
 
-  handleOnClickGoodGrade = () => {
-    this.setState({ good: this.state.good + 1 });
-  };
-  handleOnClickNeutralGrade = () => {
-    this.setState({ neutral: this.state.neutral + 1 });
-  };
-  handleOnClickBadGrade = () => {
-    this.setState({ bad: this.state.bad + 1 });
+  handleOnClick = option => {
+    switch (option) {
+      case 'good':
+        return this.setState({ good: this.state.good + 1 });
+      case 'neutral':
+        return this.setState({ neutral: this.state.neutral + 1 });
+      case 'bad':
+        return this.setState({ bad: this.state.bad + 1 });
+      default:
+        break;
+    }
   };
 
   countTotalFeedback = () => {
@@ -34,9 +38,18 @@ export class App extends Component {
       <div className={css.main_div}>
         <h2>Please leave feedback</h2>
         <div>
-          <button onClick={this.handleOnClickGoodGrade}>Good</button>
-          <button onClick={this.handleOnClickNeutralGrade}>Neutral</button>
-          <button onClick={this.handleOnClickBadGrade}>Bad</button>
+          <FeedbackOptions
+            options={'Good'}
+            onLeaveFeedback={() => this.handleOnClick('good')}
+          ></FeedbackOptions>
+          <FeedbackOptions
+            options={'Neutral'}
+            onLeaveFeedback={() => this.handleOnClick('neutral')}
+          ></FeedbackOptions>
+          <FeedbackOptions
+            options={'Bad'}
+            onLeaveFeedback={() => this.handleOnClick('bad')}
+          ></FeedbackOptions>
         </div>
         <h2>Statistics</h2>
         <div>
